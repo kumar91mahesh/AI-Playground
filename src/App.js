@@ -14,7 +14,7 @@ class App extends React.Component {
         
         // When you are done, return a string
         // you want to send back to the user
-        return val;
+        return val.toUpperCase();
 }`,
       count: 1,
       disableButton: true,
