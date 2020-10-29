@@ -35,9 +35,15 @@ class ChatBox extends Component {
       {
         id: "1",
         message: function({ previousValue, steps }) {
-          const evaluated = SafeEval(props.chatBotData.code);
-          const val = evaluated(steps.search.value);
-          return val;
+          const evaluated = SafeEval(props.getCode());
+          try{
+            const val = evaluated(previousValue);
+            return val;
+          } catch(err){
+            console.log(err);
+            return previousValue;
+          }
+          
         },
         trigger: "search",
       },
@@ -50,7 +56,6 @@ class ChatBox extends Component {
     return (
       <ThemeProvider theme={theme}>
         <ChatBot
-          key={props.chatBotData.count}
           steps={steps}
           width="100%"
         />

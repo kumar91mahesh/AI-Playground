@@ -16,7 +16,6 @@ class App extends React.Component {
         // you want to send back to the user
         return val.toUpperCase();
 }`,
-      count: 1,
       disableButton: true,
     };
   }
@@ -27,20 +26,20 @@ class App extends React.Component {
   getEditorvalue = () => {
     const model = this.refs.monaco.editor.getModel();
     const value = model.getValue();
-    const { count } = this.state;
-    this.setState({ code: value, count: count + 1, disableButton: true });
+    this.setState({ code: value, disableButton: true });
   };
 
   onChange = (val) => {
     this.setState({ code: val, disableButton: false });
   };
 
+  getCode = ()=> {
+    const { code } = this.state;
+    return code;
+  }
+
   render() {
-    const { code, count, disableButton } = this.state;
-    const chatBoatData = {
-      code,
-      count,
-    };
+    const { code, disableButton } = this.state;
     const options = {
       selectOnLineNumbers: true,
     };
@@ -76,7 +75,7 @@ class App extends React.Component {
             />
           </div>
           <div className="column">
-            <ChatBox chatBotData={chatBoatData} />
+            <ChatBox getCode = {this.getCode} />
           </div>
         </div>
       </div>
