@@ -35,8 +35,8 @@ class ChatBox extends Component {
       {
         id: "1",
         message: function({ previousValue, steps }) {
-          const evaluated = SafeEval(props.getCode());
           try{
+          const evaluated = SafeEval(props.getCode());
             const val = evaluated(previousValue);
             return val;
           } catch(err){

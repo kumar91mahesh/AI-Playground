@@ -2,23 +2,35 @@ import React from "react";
 import "./App.css";
 import MonacoEditor from "react-monaco-editor";
 import ChatBox from "./chatbox";
-
+const DEFAULT_CODE = `function respond(val) { 
+  // BOT LOGIC GOES HERE
+  // 'inputText' is the text entered 
+  // by the user speaking to your bot
+  
+  // When you are done, return a string
+  // you want to send back to the user
+  return val.toUpperCase();
+}`;
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      code: `function respond(val) { 
-        // BOT LOGIC GOES HERE
-        // 'inputText' is the text entered 
-        // by the user speaking to your bot
-        
-        // When you are done, return a string
-        // you want to send back to the user
-        return val.toUpperCase();
-}`,
+      code:'',
       disableButton: true,
     };
   }
+
+  componentDidMount() {
+    const {data, saveCode} = this.props;
+    if(data.code){
+     this.setState({code:data.code});
+    }
+  }
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    console.log(error, errorInfo);
+  }
+
   editorDidMount = (editor, monaco) => {
     editor.focus();
   };
@@ -27,6 +39,8 @@ class App extends React.Component {
     const model = this.refs.monaco.editor.getModel();
     const value = model.getValue();
     this.setState({ code: value, disableButton: true });
+    const {saveCode} = this.props;
+    saveCode(value);
   };
 
   onChange = (val) => {
@@ -34,7 +48,7 @@ class App extends React.Component {
   };
 
   getCode = ()=> {
-    const { code } = this.state;
+    const { code } = this.props.data;
     return code;
   }
 
@@ -67,7 +81,7 @@ class App extends React.Component {
               height="100vh"
               language="javascript"
               theme="vs-dark"
-              value={code}
+              value={code || DEFAULT_CODE}
               options={options}
               onChange={this.onChange}
               editorDidMount={this.editorDidMount}
