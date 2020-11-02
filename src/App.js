@@ -21,7 +21,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const {data, saveCode} = this.props;
+    const {data} = this.props;
     if(data.code){
      this.setState({code:data.code});
     }
